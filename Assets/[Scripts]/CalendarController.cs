@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-enum SeasonState
+[System.Serializable]
+public enum SeasonState
 {
     WINTER,
     SPRING,
@@ -14,35 +15,41 @@ enum SeasonState
 public class CalendarController : MonoBehaviour
 {
     [SerializeField]
-    List<CalendarPanel> calendarDates;
+    List<CalendarPanel> calendarPanels;
 
     [SerializeField]
-    TextMeshProUGUI seasonText;
+    public TextMeshProUGUI seasonText;
 
     [SerializeField]
-    SeasonState currentSeason;
+    WeatherEvent[] weathertype;
 
     [SerializeField]
-    CalendarPanel currentDate;
+    public SeasonState currentSeason;
+
+    [SerializeField]
+    public CalendarPanel currentDate;
 
     void Start()
     {
         GetCalendarPanels();
         currentSeason = SeasonState.SUMMER;
         seasonText = GameObject.FindWithTag("Season Text").GetComponent<TextMeshProUGUI>();
-
-        currentDate = calendarDates[0];
+        // sets calendar date to the first date
+        currentDate = calendarPanels[0];
+        //currentDate.gameObject.GetComponent<Image>().color = new Color(1f, 1f, 1f);
+        currentDate.PlayWeatherEvent();
     }
 
     void GetCalendarPanels()
     {
-        calendarDates = new List<CalendarPanel>();
+        calendarPanels = new List<CalendarPanel>();
         var datePanels = GetComponentsInChildren<CalendarPanel>();
         for (int i = 0; i < datePanels.Length; i++)
         {
             // Sets the day number of the panel
             datePanels[i].dayText.text = (i + 1).ToString();
-            calendarDates.Add(datePanels[i]);
+            calendarPanels.Add(datePanels[i]);
+            calendarPanels[i].weatherEvent = weathertype[0];
         }
     }
 
@@ -50,7 +57,6 @@ public class CalendarController : MonoBehaviour
     {
         onCurrentState();
 
-        currentDate.PlayEvent();
     }
 
     void onCurrentState()
@@ -71,6 +77,43 @@ public class CalendarController : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    void changeSeasonState()
+    {
+        if (currentSeason == SeasonState.FALL)
+        {
+            currentSeason = SeasonState.WINTER;
+        }
+        else
+        {
+            currentSeason++;
+        }
+
+    }
+
+    public void SetNewDay()
+    {
+        for(int i = 0; i < calendarPanels.Count; i++)
+        {
+            if(currentDate != null && currentDate == calendarPanels[i])
+            {
+                currentDate.StopWeatherEvent();
+                if(i < calendarPanels.Count - 1)
+                {
+                    // sets to the first day of new season
+                    currentDate = calendarPanels[i + 1];
+                }
+                else if (i >= calendarPanels.Count - 1)
+                {
+                    // resets to the first day of new season
+                    currentDate = calendarPanels[0];
+                    changeSeasonState();
+                }
+                currentDate.PlayWeatherEvent();
+                break;
+            }
         }
     }
 }

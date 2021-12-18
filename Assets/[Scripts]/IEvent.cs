@@ -12,4 +12,6 @@ public abstract class IEvent : ScriptableObject
     public Sprite image;
 
     public abstract void PlayEvent();
+
+    public abstract void StopEvent();
 }

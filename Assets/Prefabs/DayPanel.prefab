@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -89,6 +89,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5538b3075944cd741b176ac22a02cde6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  dayText: {fileID: 0}
+  weatherEvent: {fileID: 0}
+  events: []
 --- !u!1 &7560947981887254896
 GameObject:
   m_ObjectHideFlags: 0
