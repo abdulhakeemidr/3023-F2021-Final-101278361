@@ -20,13 +20,18 @@ public class CalendarController : MonoBehaviour
     TextMeshProUGUI seasonText;
 
     [SerializeField]
-    SeasonState currentState;
+    SeasonState currentSeason;
+
+    [SerializeField]
+    CalendarPanel currentDate;
 
     void Start()
     {
         GetCalendarPanels();
-        currentState = SeasonState.SUMMER;
+        currentSeason = SeasonState.SUMMER;
         seasonText = GameObject.FindWithTag("Season Text").GetComponent<TextMeshProUGUI>();
+
+        currentDate = calendarDates[0];
     }
 
     void GetCalendarPanels()
@@ -44,11 +49,13 @@ public class CalendarController : MonoBehaviour
     void Update()
     {
         onCurrentState();
+
+        currentDate.PlayEvent();
     }
 
     void onCurrentState()
     {
-        switch (currentState)
+        switch (currentSeason)
         {
             case SeasonState.WINTER:
                 seasonText.text = "WINTER";

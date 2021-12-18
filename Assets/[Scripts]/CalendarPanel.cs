@@ -7,14 +7,26 @@ public class CalendarPanel : MonoBehaviour
 {
     [SerializeField]
     public TextMeshProUGUI dayText;
+
+    [SerializeField]
+    List<IEvent> events;
+
     void Start()
     {
         dayText = GetComponentInChildren<TextMeshProUGUI>();
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    public void PlayEvent()
+    {
+        foreach (IEvent happened in events)
+        {
+            happened.PlayEvent();
+            Debug.Log(dayText.text);
+        }
     }
 }
