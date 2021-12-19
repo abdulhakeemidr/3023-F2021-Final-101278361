@@ -13,8 +13,11 @@ public class WeatherEvent : IEvent
     {
         //GameObject weather = GameObject.FindWithTag("Rain");
         //weather.SetActive(true);
+        if(weatherPrefab != null)
+        {
+            weatherInstance = Instantiate(weatherPrefab, new Vector3(0f, 4f, -4f), Quaternion.identity);
+        }
 
-        weatherInstance = Instantiate(weatherPrefab, new Vector3(0f, 4f, -4f), Quaternion.identity);
         Debug.Log("Weather");
     }
 

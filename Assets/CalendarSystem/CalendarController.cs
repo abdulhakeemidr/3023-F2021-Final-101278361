@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 
 [System.Serializable]
 public enum SeasonState
@@ -23,11 +24,26 @@ public class CalendarController : MonoBehaviour
     [SerializeField]
     WeatherEvent[] weathertype;
 
-    [SerializeField]
-    public SeasonState currentSeason;
-
+    [Header("Current Date/Season")]
     [SerializeField]
     public CalendarPanel currentDate;
+
+    [SerializeField]
+    public static SeasonState currentSeason;
+
+    public float TimeSpeed = 200f;
+
+    [Header("Day Lighting Colors")]
+    [SerializeField]
+    Color DayTimeLighting = new Color(1f, 0.98f, 0.76f);
+    [SerializeField]
+    Color DuskDawnLighting;
+    [SerializeField]
+    Color NightTimeLighting;
+    [SerializeField]
+    Light2D characterlighting;
+    [SerializeField]
+    Light2D GlobalLighting;
 
     void Start()
     {
@@ -36,8 +52,8 @@ public class CalendarController : MonoBehaviour
         seasonText = GameObject.FindWithTag("Season Text").GetComponent<TextMeshProUGUI>();
         // sets calendar date to the first date
         currentDate = calendarPanels[0];
-        //currentDate.gameObject.GetComponent<Image>().color = new Color(1f, 1f, 1f);
         currentDate.PlayWeatherEvent();
+        DisplayCurrentState();
     }
 
     void GetCalendarPanels()
@@ -47,19 +63,13 @@ public class CalendarController : MonoBehaviour
         for (int i = 0; i < datePanels.Length; i++)
         {
             // Sets the day number of the panel
-            datePanels[i].dayText.text = (i + 1).ToString();
+            datePanels[i].dayTextUI.text = (i + 1).ToString();
             calendarPanels.Add(datePanels[i]);
             calendarPanels[i].weatherEvent = weathertype[0];
         }
     }
 
-    void Update()
-    {
-        onCurrentState();
-
-    }
-
-    void onCurrentState()
+    void DisplayCurrentState()
     {
         switch (currentSeason)
         {
@@ -90,7 +100,7 @@ public class CalendarController : MonoBehaviour
         {
             currentSeason++;
         }
-
+        DisplayCurrentState();
     }
 
     public void SetNewDay()

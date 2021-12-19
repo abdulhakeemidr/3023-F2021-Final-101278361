@@ -10,8 +10,9 @@ public class CurrentDateTime : MonoBehaviour
     [SerializeField]
     TextMeshProUGUI dateTextUI;
 
-    int HOUR;
-    int MINUTE;
+    public static int HOUR;
+    public static int MINUTE;
+    public static string Day;
 
     int MAXHR = 24;
     int MAX_MIN = 60;
@@ -29,12 +30,13 @@ public class CurrentDateTime : MonoBehaviour
 
     void Update()
     {
-        string msg = calendarScript.currentDate.dayText.text + " day of " +
+        Day = calendarScript.currentDate.dayTextUI.text + " day of " +
             calendarScript.seasonText.text;
-        dateTextUI.text = msg;
+        dateTextUI.text = Day;
 
+        // TimeCounter() and DisplayCurrentTime() are based on this tutorial
+        // referenced here: https://www.youtube.com/watch?v=Yn-a1Wd6baw&t=746s
         TimeCounter();
-
         DisplayCurrentTime();
     }
 
@@ -57,7 +59,7 @@ public class CurrentDateTime : MonoBehaviour
         }
         else
         {
-            counter += Time.deltaTime * 200f;
+            counter += Time.deltaTime * calendarScript.TimeSpeed;
         }
     }
 
